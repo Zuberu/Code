@@ -100,6 +100,8 @@ struct XO
 
     void FieldCheck()
     {
+        int H;
+
         for(int i=0; i<3; i++)
             if(field[i][0] !=0 && field[i][0] == field[i][1] && field[i][1] == field[i][2])
             {
@@ -107,7 +109,7 @@ struct XO
                 field[i][0] = 3;
                 field[i][1] = 3;
                 field[i][2] = 3;
-                break;
+                return;
             }
 
         for(int i=0; i<3; i++)
@@ -117,8 +119,49 @@ struct XO
                 field[0][i] = 3;
                 field[1][i] = 3;
                 field[2][i] = 3;
-                break;
+                return;
             }
+
+        if(field[0][0] == field[1][1] && field[1][1] == field[2][2] && field[0][0] != 0)
+        {
+            W = field[0][0];
+
+            for(int i=0; i<3; i++)
+                for(int j=0; j<3; j++)
+                {
+                    if(i == j)
+                        field[i][j] = 3;
+                }
+
+            return;
+        }
+
+        if(field[2][0] == field[1][1] && field[1][1] == field[0][2] && field[2][0] != 0)
+        {
+            W = field[2][0];
+
+            for(int i=0; i<3; i++)
+                for(int j=0; j<3; j++)
+                {
+                    if(i+j == 2)
+                        field[i][j] = 3;
+                }
+
+            return;
+        }
+
+        W = 3;
+        for(int i=0; i<3; i++)
+        {
+            for(int j=0; j<3; j++)
+            {
+                if(field[i][j] == 0)
+                {
+                    W = 0;
+                    return;
+                }
+            }
+        }
     }
 
     void TheWinner()
@@ -130,6 +173,9 @@ struct XO
                 break;
             case 2:
                 cout << "THE WINNER IS COMPUTER!" << endl;
+                break;
+            default:
+                cout << "NOBODY IS THE WINNER!" << endl;
                 break;
         }
     }
@@ -145,6 +191,11 @@ int main()
     {
         Game.OutField();
         Game.InFieldP();
+        Game.FieldCheck();
+
+        if(Game.W != 0)
+                break;
+
         Game.InFieldAI();
         Game.FieldCheck();
     }
